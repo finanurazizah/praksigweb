@@ -1,0 +1,13 @@
+*,html {margin:0; padding: 0;}
+.container {background-color: white; height:100vh; width:100%;}
+h1 {background-color:blue; padding:25px;height:5vh;}
+.isi {display:flex;}
+.menu {background-color:lightgrey; height:85vh; width:200vh;}
+li {color:black;list-style-type:none; padding: 15px;}
+li:hover {background-color: cadetblue; transition:0.2s ease-in-out; transition-delay:0.1s;}
+a {color: black; text-decoration: none;}
+.content {padding: 20px;}
+.inti {display: flex;padding: 10px;}
+h2 {color: black; display: flex; height:12vh ;align-items: center; padding-left: 40%;}
+p {color: black; padding: 10px; text-align: justify;}
+h6 {background-color:blue; padding: 10px; font-weight: normal; height:2vh;}

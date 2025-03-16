@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Validasi Input</h1>
+<h3>Masukkan nama, password, dan alamat email anda :</h3>
+<table>
+    <tr>
+        <td>Nama:</td>
+        <td><input id="nama" type="text"/></td>
+    </tr>
+    <tr>
+        <td>Password:</td>
+        <td><input id="password" type="text"/></td>
+    </tr>
+    <tr>
+        <td>E-mail:</td>
+        <td><input id="email" type="email"/></td>
+    </tr>
+</table>
+<input type="button" value="klik" onclick="tampilkan () ; "/>
+<p id="tulis"></p>
+<script>
+    function hasil() {
+        pass = document.getElementById("password").value;
+        sss = 'sss'
+        if (pass !== sss) {alert('password salah');
+        return 'password salah';}
+        return 'password benar';}
+    function tampilkan() {
+        document.getElementById("tulis").innerHTML = hasil();}
+</script>   
+</body>
+</html>

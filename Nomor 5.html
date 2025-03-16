@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Menampilkan bilangan fibonacci sampai angka yang anda masukkan</h1>
+<h3>Masukkan angka sebagai batas menampilkan bilangan fibonacci</h3>
+<input id="datainput" type="number" />
+<input type="button" value="click" onclick="tampilkan () ; "/>
+<p id="tulis"></p>
+<script>
+    function fib(n) {
+        const fib = [1, 1]
+        for (let i = 2; i< n; i++) {let nexFib = fib[i - 1] + fib[i - 2];
+            if (nexFib >= n) break;
+            fib.push(nexFib);}
+            return fib}
+
+    function tampilkan() {
+        num = parseInt(document.getElementById("datainput").value);
+        hasil = fib(num).join(", ");
+        document.getElementById("tulis").innerHTML = "Bilangan fibonacci kurang dari " + num + " adalah: " + hasil;}
+</script>
+</body>
+</html>

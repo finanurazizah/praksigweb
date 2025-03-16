@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Kelompok umur manakah anda?</h1>
+<h3>Masukkan nama dan umur anda :</h3>
+<table>
+    <tr>
+        <td>Nama:</td>
+        <td><input id="nama" type="text"/></td>
+    </tr>
+    <tr>
+        <td>Umur:</td>
+        <td><input id="umur" type="number"/></td>
+    </tr>
+</table>
+<input type="button" value="klik" onclick="tampilkan () ; "/>
+<p id="tulis"></p>
+<script>
+    function hasil() {
+        nama = document.getElementById("nama").value;
+        umur = document.getElementById("umur").value;
+        if (nama === "") {alert('Isikan nama!!!');
+        return 'Isikan nama!!!';}
+        umur = parseInt(umur);
+        if (umur >= 1 && umur <=5) return 'Anda masih bayi';
+        if (umur >= 6 && umur <= 15) return 'Anda masih anak-anak';
+        if (umur >= 16 && umur <= 30) return 'Anda masih remaja';
+        if (umur >= 31 && umur <= 60) return 'Anda sudah dewasa';
+        if (umur >= 61) return 'Anda sudah dewasa';
+        return 'Anda Game Over';}
+    function tampilkan() {
+        document.getElementById("tulis").innerHTML = hasil();}
+</script>   
+</body>
+</html>
+
+<script>
+    function hasil() {
+        pass = document.getElementById("password").value;
+        sss = 'sss'
+        if (pass !== sss) {alert('password salah');
+        return 'password salah';}
+        return 'password benar';}
+    function tampilkan() {
+        document.getElementById("tulis").innerHTML = hasil();}
