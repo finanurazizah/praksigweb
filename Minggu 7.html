@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet Web Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet Geocoder -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <!-- Leaflet Routing Machine -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="jogja.js"></script>
+    <style> 
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;}
+        header {
+            background: #1d66ede0;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;}
+        #map {
+            flex-grow: 1;
+            width: 100%;}
+        #rute {
+            position: absolute;
+            top: 70px;
+            left: 10px;
+            z-index: 1000;
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;}
+    </style>  
+</head> 
+<body> 
+    <header>
+        <h1>Peta Teknik Geodesi - GSP</h1>
+    </header>
+    <button id="rute">Tampilkan Rute</button>
+    <div id="map"></div> 
+    <script> 
+        // Koordinat titik marker
+        var KoordGSP = [-7.77000, 110.37778];
+        var KoordTGD = [-7.76384, 110.37269];
+
+        var Koordtengah = [
+        (KoordGSP[0] + KoordTGD[0]) / 2, // Rata-rata Latitude
+        (KoordGSP[1] + KoordTGD[1]) / 2  // Rata-rata Longitude
+        ];
+
+        // Inisialisasi Peta
+        var map = L.map('map', {
+            center: (Koordtengah),
+            zoom: 15});
+
+        // Definisi beberapa tile layer (basemap)
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '&copy; Esri, NASA, NGA, USGS'});
+
+        var googleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            attribution: '&copy; Google'});
+
+        // Custom Icon
+        var blueIcon = L.icon({
+            iconUrl: 'https://cdn.pixabay.com/photo/2014/04/02/10/45/poi-304466_1280.png', 
+            iconSize: [20, 30]});
+        var redIcon = L.icon({
+            iconUrl: 'https://cdn.pixabay.com/photo/2014/04/02/10/45/location-304467_1280.png', 
+            iconSize: [20, 30]});
+        
+        // Marker di Teknik Geodesi UGM
+        var markerGeodesi = L.marker(KoordTGD, { icon: blueIcon })
+            .bindPopup("<b>Teknik Geodesi UGM</b><br>");
+        markerGeodesi.addTo(map)
+        
+        // Marker di GSP UGM
+        var markerGSP = L.marker(KoordGSP, { icon: redIcon })
+            .bindPopup("<b>Grha Sabha Pramana UGM</b><br>");
+        markerGSP.addTo(map);
+        
+        // Tambahkan Control Pencarian ke Peta
+        L.Control.geocoder({
+            defaultMarkGeocode: true,
+            position: "topright"
+        }).addTo(map);
+
+        layerDIY = L.geoJSON(diygeojson,{
+            style: function(feature) {
+                switch (feature.properties.KABUPATEN) {
+                    case 'Gunung Kidul': return {color: "#ff9900"};
+                    case 'Sleman':  return {color: "red"};
+                    case 'Bantul':  return {color: "blue"};
+                    case 'Yogyakarta':  return {color: "green"};
+                    case 'Kulon Progo':  return {color: "magenta"};}},
+        onEachFeature: function (feature, layer) {
+            layer.bindPopup(
+                'Wilayah ini adalah Kecamatan ' + 
+                '<strong>' +
+                    feature.properties.KECAMATAN +
+                    '</strong>');}}).addTo(map);
+
+        // Variabel untuk menyimpan rute
+        var routingControl = null;
+
+        // Fungsi untuk menampilkan rute
+        document.getElementById("rute").addEventListener("click", function() {
+            if (routingControl) {
+                map.removeControl(routingControl);
+                routingControl = null;
+                this.innerText = "Tampilkan Rute";
+            } else {
+                routingControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(-7.77000, 110.37778), // GSP UGM
+                        L.latLng(-7.763942248084617, 110.37269772908462) // Teknik Geodesi UGM
+                    ],
+                    routeWhileDragging: true,
+                    createMarker: function() { return null; } // Hilangkan marker tambahan
+                }).addTo(map);
+                this.innerText = "Sembunyikan Rute";}});
+
+        // Tambahkan Layer Control untuk memilih basemap dan overlay
+        var baseMaps = {
+            "OpenStreetMap": osm,
+            "Esri Satellite": esriSat,
+            "Google Hybrid": googleHybrid};
+
+        var overlayMaps = {
+            "GSP UGM": markerGSP,
+            "Geodesi UGM": markerGeodesi,
+            "Batas Wukayah DIY": layerDIY};
+       
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+    </script> 
+</body> 
+</html>
