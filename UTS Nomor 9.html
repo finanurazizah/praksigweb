@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet Web Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet Geocoder -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <style> 
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;}
+        header {
+            background: #1d66ede0;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;}
+        #map {
+            flex-grow: 1;
+            width: 100%;}
+    </style>  
+</head> 
+<body> 
+    <header>
+        <h1>Peta UGM</h1>
+    </header>
+    <div id="map"></div> 
+    <script> 
+        // Koordinat titik marker
+        var KoordTeknik = [-7.765179470798855, 110.37228552979528];
+        var KoordFEB = [-7.770315092207867, 110.37980469944165]
+        var KoordFisipol = [-7.769256512598189, 110.37966390438459]
+        var KoordFKH = [-7.767672255268017, 110.38448464323479]
+        var KoordSV = [-7.773889015719621, 110.37221274496707]
+
+        var Koordtengah = [
+        (KoordTeknik[0] + KoordSV[0]) / 2, // Rata-rata Latitude
+        (KoordFKH[1] + KoordTeknik[1]) / 2  // Rata-rata Longitude
+        ];
+
+        // Inisialisasi Peta
+        var map = L.map('map', {
+            center: (Koordtengah),
+            zoom: 15});
+
+        // Definisi beberapa tile layer (basemap)
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'});
+
+        var esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '&copy; Esri, NASA, NGA, USGS'});
+
+        var googleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            attribution: '&copy; Google'});
+
+        // Tambahkan salah satu basemap sebagai default
+        osm.addTo(map);
+
+        // Custom Icon
+        var blueIcon = L.icon({
+            iconUrl: 'https://cdn.pixabay.com/photo/2014/04/02/10/45/location-304467_1280.png', 
+            iconSize: [20, 30]});
+        
+        // Marker di Fakultas Teknik UGM
+        var markerTeknik = L.marker(KoordTeknik, { icon: blueIcon })
+        .bindPopup('<h2>Fakultas Teknik UGM</h2><img src="https://pict.sindonews.net/dyn/850/pena/news/2023/07/25/211/1159891/berminat-kuliah-s2-di-fakultas-teknik-ugm-ini-rincian-biayanya-gpr.jpg" style="width:200px; display:block; margin:auto;"><a href="https://maps.app.goo.gl/i1HQPChuRHF71reSA">Link ini menuju ke FT UGM</a>');
+        markerTeknik.addTo(map)
+
+        // Marker di Fakultas FEB UGM
+        var markerFEB = L.marker(KoordFEB, { icon: blueIcon })
+        .bindPopup('<h2>Fakultas Ekonomi Bisnis UGM</h2><img src="https://storage.googleapis.com/danacita-website-v3-prd/website_v3/images/blog-biaya-mahasiswa-aktif-feb-ugm.original.jpg" style="width:200px; display:block; margin:auto;"><a href="https://maps.app.goo.gl/Lx1VYhPYuNshsSVm7">Link ini menuju ke FEB UGM</a>');
+        markerFEB.addTo(map)
+
+        // Marker di Fakultas Fisipol UGM
+        var markerFisipol = L.marker(KoordFisipol, { icon: blueIcon })
+        .bindPopup('<h2>Fakultas Ilmu Sosial dan Ilmu Politik UGM</h2><img src="https://static.republika.co.id/uploads/member/images/news/7fh6dtbuvo.jpg" style="width:200px; display:block; margin:auto;"><a href="https://maps.app.goo.gl/Y4zVZ6wmpnAXByEV7">Link ini menuju ke Fisipol UGM</a>');
+        markerFisipol.addTo(map)
+
+        // Marker di Fakultas FKH UGM
+        var markerFKH = L.marker(KoordFKH, { icon: blueIcon })
+        .bindPopup('<h2>Fakultas Kedokteran Hewan UGM</h2><img src="https://cdn.antaranews.com/cache/800x533/2012/04/201204121fakultas-kedoteran-hewan.jpg" style="width:200px; display:block; margin:auto;"><a href="https://maps.app.goo.gl/CarTAdZGnsU89Bq7A">Link ini menuju ke FKH UGM</a>');
+        markerFKH.addTo(map)
+
+        // Marker di Fakultas SV UGM
+        var markerSV = L.marker(KoordSV, { icon: blueIcon })
+        .bindPopup('<h2>Sekolah Vokasi UGM</h2><img src="https://cdn.antaranews.com/cache/800x533/2012/09/20120910sekolah-vokasi-ugm.jpg" style="width:200px; display:block; margin:auto;"><a href="https://maps.app.goo.gl/Th1VqXfKZKBpUqxEA/">Link ini menuju ke SV UGM</a>');
+        markerSV.addTo(map)
+        
+        // Tambahkan Control Pencarian ke Peta
+        L.Control.geocoder({
+            defaultMarkGeocode: true,
+            position: "topright"
+        }).addTo(map);
+
+        // Tambahkan Layer Control untuk memilih basemap dan overlay
+        var baseMaps = {
+            "OpenStreetMap": osm,
+            "Esri Satellite": esriSat,
+            "Google Hybrid": googleHybrid};
+
+        var overlayMaps = {
+            "Fakultas Teknik": markerTeknik,
+            "Fakultas Ekonomi dan Bisnis": markerFEB,
+            "Fakultas Ilmu Sosial dan Ilmu Politik": markerFisipol,
+            "Fakultas Kedokteran Hewan": markerFKH,
+            "Sekolah Vokasi": markerSV};
+
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+    </script> 
+</body> 
+</html>

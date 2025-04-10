@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>UTS PrakSIGWeb</h1>
+<p>Berikut rincian jawaban point 3 sampai point 8</p>
+<p></p>
+<h1>Ini Judul pertama</h1>
+<h3>Ini Judul kedua</h3>
+<p></p>
+<a href="https://geodesi.ugm.ac.id/">Link ini menuju ke Website resmi Teknik Geodesi</a>
+<p></p>
+<p><i>Tulisan ini miring,</i><b> tapi yang ini tebal</b></p>
+<p></p>
+<p><font color="red">Baris yang ini warnanya merah</font></p>
+<p><font color="green">Baris yang ini warnanya hijau</font></p>
+<p></p>
+
+<h2>Tabel</h2>
+<hr>
+<table border="2">
+    <tr>
+        <th>Nama</th>
+        <th>NIM</th></tr>
+    <tr>
+        <td>Fina Nurazizah Lintang Sari</td>
+        <td>22/505386/TK/55300</td></tr></table>
+
+<h2>Formulir Validasi Pekerjaan</h2>
+<hr>
+<h3>Masukkan nama, password, dan alamat email anda :</h3>
+<form action="" methode=""></form>
+<table>
+    <tr>
+        <td>Nama:</td>
+        <td><input id="nama" type="text"/></td>
+    </tr>
+    <tr>
+        <td>Password:</td>
+        <td><input id="password" type="password"/></td>
+    </tr>
+    <tr>
+        <td>E-mail:</td>
+        <td><input id="email" type="email"/></td>
+    </tr>
+</table>
+<input type="button" value="klik" onclick="tampilkan () ; "/>
+<p id="tulis"></p>
+<script>
+    function hasil() {
+        pass = document.getElementById("password").value;
+        if (pass !== 'Selesai') {alert('password salah');
+        return 'Password Salah. Jika pekerjaanmu sudah selesai, tuliskan "Selesai"';}
+        return 'Terima kasih telah menyelesaikan pekerjaanmu';}
+    function tampilkan() {
+        document.getElementById("tulis").innerHTML = hasil();}
+</script>   
+</body>
+</html>
